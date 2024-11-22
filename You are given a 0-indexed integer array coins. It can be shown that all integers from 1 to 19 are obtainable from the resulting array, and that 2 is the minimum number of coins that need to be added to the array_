@@ -1,0 +1,26 @@
+def minCoins(coins, target):
+    # Sort the coins in ascending order
+    coins.sort()
+    
+    # Variables to track the maximum reachable sum and the number of coins added
+    max_reachable = 0
+    added_coins = 0
+    i = 0
+    
+    # Continue until the max reachable sum is at least target
+    while max_reachable < target:
+        if i < len(coins) and coins[i] <= max_reachable + 1:
+            # We can use this coin to extend our reachable range
+            max_reachable += coins[i]
+            i += 1
+        else:
+            # We need to add a coin of value max_reachable + 1 to cover the range
+            added_coins += 1
+            max_reachable += max_reachable + 1
+    
+    return added_coins
+
+# Example test case
+coins = [1, 4, 10]
+target = 19
+print(minCoins(coins, target))  # Output: 2
