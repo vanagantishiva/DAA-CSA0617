@@ -1,0 +1,45 @@
+from typing import List
+
+def subsets_with_element(nums: List[int], x: int) -> List[List[int]]:
+    """
+    Generate all subsets that must include the element x.
+    """
+    # Step 1: Generate subsets of nums excluding the element x
+    def backtrack(start, path):
+        # Add the current subset to the result (it will include x by default)
+        result.append(path + [x])
+        
+        # Add all combinations starting from 'start' index.
+        for i in range(start, len(nums)):
+            backtrack(i + 1, path + [nums[i]])
+
+    result = []
+    # Remove element x from the list, since we want subsets containing x
+    nums = [num for num in nums if num != x]
+    
+    # Step 2: Use backtracking to generate subsets from the remaining elements
+    backtrack(0, [])
+    
+    return result
+
+# Example 1: Input: nums = [2, 3, 4, 5], x = 3
+nums = [2, 3, 4, 5]
+x = 3
+print("Subsets containing 3:", subsets_with_element(nums, x))
+
+def generate_power_set(nums: List[int]) -> List[List[int]]:
+    """
+    Generate the power set of nums.
+    """
+    def backtrack(start, path):
+        result.append(path)
+        for i in range(start, len(nums)):
+            backtrack(i + 1, path + [nums[i]])
+
+    result = []
+    backtrack(0, [])
+    return result
+
+# Example 2: Input: nums = [1, 2, 3]
+nums2 = [1, 2, 3]
+print("Power set:", generate_power_set(nums2))
