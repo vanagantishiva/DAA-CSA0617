@@ -1,0 +1,41 @@
+def word_break(s: str, wordDict: list[str]) -> bool:
+    word_set = set(wordDict)
+    dp = [False] * (len(s) + 1)
+    dp[0] = True  # Base case: empty string can be segmented
+
+    for i in range(1, len(s) + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in word_set:
+                dp[i] = True
+                break
+
+    return dp[len(s)]
+
+# Helper function to find all segmentations
+def word_break_all(s: str, wordDict: list[str]) -> list[str]:
+    word_set = set(wordDict)
+    result = []
+    n = len(s)
+
+    def backtrack(start, path):
+        if start == n:
+            result.append(" ".join(path))
+            return
+        for end in range(start + 1, n + 1):
+            if s[start:end] in word_set:
+                backtrack(end, path + [s[start:end]])
+
+    backtrack(0, [])
+    return result
+
+# Example usage
+dictionary = ["i", "like", "sam", "sung", "samsung", "mobile", 
+              "ice", "cream", "icecream", "man", "go", "mango"]
+
+# Check if segmentable
+print(word_break("ilike", dictionary))  # Output: True
+print(word_break("ilikesamsung", dictionary))  # Output: True
+
+# Find all segmentations
+print(word_break_all("ilike", dictionary))  # Output: ["i like"]
+print(word_break_all("ilikesamsung", dictionary))  # Output: ["i like samsung", "i like sam sung"]
