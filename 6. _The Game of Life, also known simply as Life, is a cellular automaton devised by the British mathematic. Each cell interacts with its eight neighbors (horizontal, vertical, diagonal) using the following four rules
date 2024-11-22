@@ -1,0 +1,25 @@
+def gameOfLife(board):
+    m, n = len(board), len(board[0])
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]
+    
+    def count_neighbors(i, j):
+        return sum(0 <= i+dx < m and 0 <= j+dy < n and board[i+dx][j+dy] == 1 for dx, dy in directions)
+    
+    for i in range(m):
+        for j in range(n):
+            neighbors = count_neighbors(i, j)
+            if board[i][j] == 1 and (neighbors < 2 or neighbors > 3): board[i][j] = 3
+            if board[i][j] == 0 and neighbors == 3: board[i][j] = 2
+    
+    for i in range(m):
+        for j in range(n):
+            board[i][j] //= 2
+
+# Test Cases
+board1 = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+gameOfLife(board1)
+print(board1)  # Output: [[0, 0, 0], [1, 0, 1], [0, 1, 1], [0, 1, 0]]
+
+board2 = [[1,1],[1,0]]
+gameOfLife(board2)
+print(board2)  # Output: [[1, 1], [1, 1]]
