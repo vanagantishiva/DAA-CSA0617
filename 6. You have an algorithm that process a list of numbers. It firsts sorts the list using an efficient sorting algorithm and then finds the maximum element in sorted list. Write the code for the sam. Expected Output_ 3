@@ -1,0 +1,30 @@
+def find_max(sorted_list):
+    # Check if the list is empty
+    if not sorted_list:
+        return "The list is empty"  # Or you can return None or an appropriate message
+    
+    # After sorting, the maximum element will be the last element in the sorted list
+    return sorted_list[-1]
+
+
+def process_list(nums):
+    # Sort the list using an efficient sorting algorithm (Python's built-in sort is O(n log n))
+    nums.sort()
+    
+    # Find and return the maximum element
+    return find_max(nums)
+
+
+# Test Cases
+
+# Test Case 1: Empty List
+nums1 = []
+print(process_list(nums1))  # Expected Output: "The list is empty" or None
+
+# Test Case 2: Single Element List
+nums2 = [5]
+print(process_list(nums2))  # Expected Output: 5
+
+# Test Case 3: All Elements are the Same
+nums3 = [3, 3, 3, 3, 3]
+print(process_list(nums3))  # Expected Output: 3
