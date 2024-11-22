@@ -1,0 +1,6 @@
+def strStr(haystack, needle):
+    return haystack.find(needle)
+
+# Test cases
+print(strStr("sadbutsad", "sad"))  # Output: 0
+print(strStr("leetcode", "leeto"))  # Output: -1
