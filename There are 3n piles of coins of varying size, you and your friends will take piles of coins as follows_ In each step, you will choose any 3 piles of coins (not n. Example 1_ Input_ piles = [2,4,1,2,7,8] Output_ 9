@@ -1,0 +1,14 @@
+def maxCoins(piles):
+    # Step 1: Sort the piles in descending order
+    piles.sort(reverse=True)
+    
+    # Step 2: Select coins from every third pile starting from the second one
+    max_coins = 0
+    for i in range(1, len(piles), 2):  # Start at index 1 and move in steps of 2 (selecting second largest in triplets)
+        max_coins += piles[i]
+    
+    return max_coins
+
+# Test cases
+print(maxCoins([2,4,1,2,7,8]))  # Output: 9
+print(maxCoins([2,4,5]))         # Output: 4
