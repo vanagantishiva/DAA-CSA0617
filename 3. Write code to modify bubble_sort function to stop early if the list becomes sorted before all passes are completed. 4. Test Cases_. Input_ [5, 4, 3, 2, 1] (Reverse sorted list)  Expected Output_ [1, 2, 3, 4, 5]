@@ -1,0 +1,21 @@
+def optimized_bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        # Last i elements are already in place, so no need to check them
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                # Swap the elements
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
+        # If no elements were swapped in the inner loop, the list is sorted
+        if not swapped:
+            break
+    return arr
+
+# Test cases
+print("Sorted Array 1:", optimized_bubble_sort([64, 25, 12, 22, 11]))  # [11, 12, 22, 25, 64]
+print("Sorted Array 2:", optimized_bubble_sort([29, 10, 14, 37, 13]))  # [10, 13, 14, 29, 37]
+print("Sorted Array 3:", optimized_bubble_sort([3, 5, 2, 1, 4]))        # [1, 2, 3, 4, 5]
+print("Sorted Array 4:", optimized_bubble_sort([1, 2, 3, 4, 5]))        # [1, 2, 3, 4, 5] (Already sorted)
+print("Sorted Array 5:", optimized_bubble_sort([5, 4, 3, 2, 1]))        # [1, 2, 3, 4, 5] (Reverse sorted)
