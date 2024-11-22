@@ -1,0 +1,19 @@
+class WordFilter:
+    def __init__(self, words: list[str]):
+        self.lookup = {}
+        for index, word in enumerate(words):
+            length = len(word)
+            for i in range(length + 1):
+                for j in range(length + 1):
+                    prefix = word[:i]
+                    suffix = word[j:]
+                    key = prefix + '#' + suffix
+                    self.lookup[key] = index
+
+    def f(self, pref: str, suff: str) -> int:
+        key = pref + '#' + suff
+        return self.lookup.get(key, -1)
+
+# Example usage
+wordFilter = WordFilter(["apple"])
+print(wordFilter.f("a", "e"))  # Output: 0
