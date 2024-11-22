@@ -1,0 +1,49 @@
+import sys
+
+# Function to calculate the cost of an optimal binary search tree
+def optimal_bst(keys, freq, n):
+    # cost[i][j] will store the minimum cost of the binary search tree for keys[i..j]
+    cost = [[0 for x in range(n+1)] for y in range(n+1)]
+    # root[i][j] will store the index of the root of the optimal binary search tree for keys[i..j]
+    root = [[0 for x in range(n+1)] for y in range(n+1)]
+
+    # Initialize the cost for a single key (i == j)
+    for i in range(n):
+        cost[i][i] = freq[i]
+        root[i][i] = i
+
+    # Now calculate cost[i][j] for all lengths greater than 1
+    for length in range(2, n+1):  # length is the length of the chain
+        for i in range(n-length+1):
+            j = i + length - 1
+            cost[i][j] = sys.maxsize  # Initialize with a large number
+            # Try all roots in the range [i..j]
+            for r in range(i, j+1):
+                # Calculate the cost of having 'r' as the root
+                left_cost = cost[i][r-1] if r > i else 0
+                right_cost = cost[r+1][j] if r < j else 0
+                total_cost = left_cost + right_cost + sum(freq[i:j+1])
+                # If the total cost is less, update cost and root
+                if total_cost < cost[i][j]:
+                    cost[i][j] = total_cost
+                    root[i][j] = r
+
+    # Print the cost and root matrix
+    print("\nCost Table:")
+    for row in cost:
+        print(row)
+
+    print("\nRoot Table:")
+    for row in root:
+        print(row)
+
+    return cost[0][n-1]  # The cost of the optimal binary search tree
+
+# Input for test case
+keys = ['A', 'B', 'C', 'D']
+freq = [0.1, 0.2, 0.4, 0.3]
+n = len(keys)
+
+# Call the function and display the output
+optimal_cost = optimal_bst(keys, freq, n)
+print(f"\nOptimal BST Cost: {optimal_cost}")
