@@ -1,0 +1,53 @@
+import heapq
+
+def dijkstra(n, graph, start):
+    # Initialize the distance array with a large number
+    distances = [float('inf')] * n
+    distances[start] = 0
+    # Min-heap priority queue (distance, node)
+    pq = [(0, start)]
+    
+    while pq:
+        curr_dist, node = heapq.heappop(pq)
+        
+        # If the current distance is already larger, skip
+        if curr_dist > distances[node]:
+            continue
+        
+        for neighbor, weight in graph[node]:
+            distance = curr_dist + weight
+            # If a shorter path is found, update it
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances
+
+def findTheCity(n, edges, distanceThreshold):
+    # Build the adjacency list representation of the graph
+    graph = [[] for _ in range(n)]
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+
+    # Initialize variables to track the result
+    min_reachable_cities = float('inf')
+    city_with_min_reach = -1
+    
+    # Run Dijkstra for each city
+    for city in range(n):
+        distances = dijkstra(n, graph, city)
+        reachable_cities = sum(1 for d in distances if d <= distanceThreshold)
+        
+        # If this city has fewer reachable cities, or the same but larger index, update the result
+        if reachable_cities < min_reachable_cities or (reachable_cities == min_reachable_cities and city > city_with_min_reach):
+            min_reachable_cities = reachable_cities
+            city_with_min_reach = city
+    
+    return city_with_min_reach
+
+# Test case
+n = 4
+edges = [[0,1,3],[1,2,1],[1,3,4],[2,3,1]]
+distanceThreshold = 4
+print(findTheCity(n, edges, distanceThreshold))  # Output: 3
