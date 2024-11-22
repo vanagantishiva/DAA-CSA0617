@@ -1,0 +1,49 @@
+def graph_coloring(n, edges, k):
+    # Step 1: Create adjacency list from edges
+    adj_list = {i: [] for i in range(n)}
+    for u, v in edges:
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+
+    # Step 2: Initialize colors array with -1 (uncolored)
+    colors = [-1] * n
+
+    # Step 3: Greedy coloring algorithm to color the graph
+    def greedy_coloring():
+        for vertex in range(n):
+            # Find the colors of adjacent vertices
+            neighbor_colors = set()
+            for neighbor in adj_list[vertex]:
+                if colors[neighbor] != -1:
+                    neighbor_colors.add(colors[neighbor])
+
+            # Find the first color not used by any of the neighbors
+            color = 0
+            while color in neighbor_colors:
+                color += 1
+            colors[vertex] = color
+
+    # Apply greedy coloring
+    greedy_coloring()
+
+    # Step 4: Find the number of colors used
+    num_colors = len(set(colors))
+
+    # Step 5: Calculate the regions you color (in a round-robin fashion: you, Alice, Bob)
+    color_counts = [0] * num_colors
+    for color in colors:
+        color_counts[color] += 1
+
+    # Maximize your color count (You color first, Alice second, Bob third)
+    your_count = 0
+    for i in range(num_colors):
+        if i % k == 0:  # You are the first one to color regions
+            your_count += color_counts[i]
+
+    return your_count
+
+# Test Case: n = 4, edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)], k = 3 (3 players: You, Alice, Bob)
+n = 4
+edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)]
+k = 3  # 3 players: You, Alice, Bob
+print(graph_coloring(n, edges, k))  # Output: The maximum number of regions you can color
