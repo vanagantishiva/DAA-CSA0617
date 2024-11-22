@@ -1,0 +1,32 @@
+def combinationSum(candidates, target):
+    result = []
+    
+    def backtrack(start, target, current_combination):
+        # Base case: if the target becomes 0, we've found a valid combination
+        if target == 0:
+            result.append(list(current_combination))
+            return
+        
+        # Try each candidate starting from the current position
+        for i in range(start, len(candidates)):
+            candidate = candidates[i]
+            # If the current candidate is greater than the remaining target, no need to continue
+            if candidate > target:
+                continue
+            # Add the current candidate to the combination
+            current_combination.append(candidate)
+            # Recurse with the updated target and allow the same candidate to be used again
+            backtrack(i, target - candidate, current_combination)
+            # Backtrack, remove the last added candidate
+            current_combination.pop()
+    
+    # Start the backtracking process
+    backtrack(0, target, [])
+    
+    return result
+
+# Test the function with the provided example
+candidates = [2, 3, 6, 7]
+target = 7
+output = combinationSum(candidates, target)
+print(output)
