@@ -1,0 +1,36 @@
+def rob(nums):
+    # Helper function to calculate the maximum money robbed in a linear street of houses
+    def rob_linear(nums):
+        n = len(nums)
+        if n == 0:
+            return 0
+        if n == 1:
+            return nums[0]
+        
+        # Initialize dp array for dynamic programming
+        dp = [0] * n
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        
+        # Fill dp array for the rest of the houses
+        for i in range(2, n):
+            dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        
+        return dp[n-1]
+    
+    # If there's only one house, rob it and return the value
+    if len(nums) == 1:
+        return nums[0]
+    
+    # Case 1: Rob from house 0 to house n-2 (excluding the last house)
+    case1 = rob_linear(nums[:-1])
+    
+    # Case 2: Rob from house 1 to house n-1 (excluding the first house)
+    case2 = rob_linear(nums[1:])
+    
+    # The result is the maximum of both cases
+    return max(case1, case2)
+
+# Test Cases
+print(rob([2, 3, 2]))  # Output: 3 (robbing house 1)
+print(rob([1, 2, 3, 1]))  # Output: 4 (robbing house 1 and house 3)
