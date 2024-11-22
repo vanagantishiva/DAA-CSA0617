@@ -1,0 +1,48 @@
+import sys
+
+def floyd_warshall(n, edges):
+    inf = sys.maxsize
+    # Initialize distance matrix with infinity
+    dist = [[inf] * n for _ in range(n)]
+
+    # Set the distance from each city to itself as 0
+    for i in range(n):
+        dist[i][i] = 0
+
+    # Set initial distances based on input edges
+    for u, v, w in edges:
+        dist[u][v] = w
+        dist[v][u] = w  # Assuming undirected graph
+
+    # Floyd-Warshall Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] < inf and dist[k][j] < inf:
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    return dist
+
+def print_matrix(matrix):
+    for row in matrix:
+        print(row)
+
+# Input for the problem
+n = 5  # Number of cities
+edges = [
+    (0, 1, 2), (0, 4, 8),  # City 0 connections
+    (1, 2, 3), (1, 4, 2),  # City 1 connections
+    (2, 3, 1),             # City 2 connections
+    (3, 4, 1)              # City 3 connections
+]
+
+# Step 1: Calculate shortest paths
+print("Initial Distance Matrix:\n")
+initial_dist = floyd_warshall(n, edges)
+print_matrix(initial_dist)
+
+# Step 2: Shortest path from C to A (City 2 to City 0)
+print(f"\nShortest path from City C (2) to City A (0): {initial_dist[2][0]}")
+
+# Step 3: Test case b - Shortest path from E (City 4) to C (City 2)
+print(f"\nShortest path from City E (4) to City C (2): {initial_dist[4][2]}")
