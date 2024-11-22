@@ -1,0 +1,21 @@
+def findPeakElement(nums):
+    low, high = 0, len(nums) - 1
+    
+    while low <= high:
+        mid = (low + high) // 2
+        
+        # Check if mid is a peak element
+        if (mid == 0 or nums[mid - 1] < nums[mid]) and (mid == len(nums) - 1 or nums[mid + 1] < nums[mid]):
+            return mid
+        # If the element on the right is greater, move to the right half
+        elif mid < len(nums) - 1 and nums[mid] < nums[mid + 1]:
+            low = mid + 1
+        # Otherwise, move to the left half
+        else:
+            high = mid - 1
+    
+    return -1  # Just in case, but the problem guarantees a peak exists.
+
+# Test cases
+print(findPeakElement([1, 2, 3, 1]))  # Output: 2
+print(findPeakElement([1, 2, 1, 3, 5, 6, 4]))  # Output: 5 or 1 (Any valid peak)
