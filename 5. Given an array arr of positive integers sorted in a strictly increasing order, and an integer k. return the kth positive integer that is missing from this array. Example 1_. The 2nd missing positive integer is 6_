@@ -1,0 +1,22 @@
+def findKthPositive(arr, k):
+    # Expected number starts at 1
+    missing_count = 0
+    current = 1
+    idx = 0
+    n = len(arr)
+    
+    while missing_count < k:
+        # If current number is not in arr, it's a missing number
+        if idx < n and arr[idx] == current:
+            idx += 1
+        else:
+            missing_count += 1
+            if missing_count == k:
+                return current
+        current += 1
+        
+    return current  # This line will be never hit because the loop exits when the kth missing is found
+
+# Test cases
+print(findKthPositive([2, 3, 4, 7, 11], 5))  # Output: 9
+print(findKthPositive([1, 2, 3, 4], 2))      # Output: 6
