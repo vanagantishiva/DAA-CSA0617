@@ -1,0 +1,77 @@
+import heapq
+
+# Node class to represent a node in the Huffman Tree
+class Node:
+    def __init__(self, char, freq):
+        self.char = char  # Character associated with the node
+        self.freq = freq  # Frequency of the character
+        self.left = None  # Left child
+        self.right = None  # Right child
+    
+    # Define comparison operators for priority queue
+    def __lt__(self, other):
+        return self.freq < other.freq
+    
+    def __eq__(self, other):
+        return self.freq == other.freq
+
+def build_huffman_tree(characters, frequencies):
+    # Create a priority queue (min-heap) and insert all nodes
+    heap = []
+    for i in range(len(characters)):
+        heapq.heappush(heap, Node(characters[i], frequencies[i]))
+
+    # Build the Huffman tree
+    while len(heap) > 1:
+        # Extract two nodes with the lowest frequency
+        left = heapq.heappop(heap)
+        right = heapq.heappop(heap)
+        
+        # Create a new internal node with the sum of the frequencies
+        new_node = Node(None, left.freq + right.freq)
+        new_node.left = left
+        new_node.right = right
+        
+        # Insert the new node back into the heap
+        heapq.heappush(heap, new_node)
+
+    # The remaining node is the root of the Huffman tree
+    return heap[0]
+
+# Function to generate Huffman codes from the tree
+def generate_huffman_codes(root):
+    codes = {}
+
+    # Helper function to traverse the tree and generate the codes
+    def traverse(node, current_code):
+        if node is None:
+            return
+        if node.char is not None:
+            # Leaf node, store the code for the character
+            codes[node.char] = current_code
+        traverse(node.left, current_code + '0')
+        traverse(node.right, current_code + '1')
+
+    traverse(root, '')
+    return codes
+
+# Function to compute Huffman codes for a given set of characters and frequencies
+def huffman_coding(characters, frequencies):
+    # Step 1: Build the Huffman Tree
+    root = build_huffman_tree(characters, frequencies)
+    
+    # Step 2: Generate Huffman Codes from the tree
+    huffman_codes = generate_huffman_codes(root)
+    
+    # Return the Huffman Codes sorted by characters
+    return sorted(huffman_codes.items())
+
+# Test Case 1
+characters = ['a', 'b', 'c', 'd']
+frequencies = [5, 9, 12, 13]
+
+# Run Huffman coding
+result = huffman_coding(characters, frequencies)
+
+# Output the Huffman Codes
+print(result)
