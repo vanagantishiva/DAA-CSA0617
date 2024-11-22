@@ -1,0 +1,37 @@
+# Merge Sort Implementation
+def merge(arr1, arr2):
+    # Merging two sorted arrays into a single sorted array
+    result = []
+    i = j = 0
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] < arr2[j]:
+            result.append(arr1[i])
+            i += 1
+        else:
+            result.append(arr2[j])
+            j += 1
+    # Append remaining elements
+    result.extend(arr1[i:])
+    result.extend(arr2[j:])
+    return result
+
+def merge_sort(arr):
+    # Base case: If the array has 1 or fewer elements, it's already sorted
+    if len(arr) <= 1:
+        return arr
+    # Divide the array into two halves
+    mid = len(arr) // 2
+    left_half = merge_sort(arr[:mid])
+    right_half = merge_sort(arr[mid:])
+    # Merge the sorted halves
+    return merge(left_half, right_half)
+
+# Test Case 1
+arr1 = [31, 23, 35, 27, 11, 21, 15, 28]
+sorted_arr1 = merge_sort(arr1)
+print("Test Case 1 - Sorted Array:", sorted_arr1)
+
+# Test Case 2
+arr2 = [22, 34, 25, 36, 43, 67, 52, 13, 65, 17]
+sorted_arr2 = merge_sort(arr2)
+print("Test Case 2 - Sorted Array:", sorted_arr2)
