@@ -1,0 +1,26 @@
+import math
+
+def euclidean_distance(p1, p2):
+    """Calculate the Euclidean distance between two points p1 and p2."""
+    return math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
+
+def closest_pair(points):
+    """Find the closest pair of points in the set using the brute force method."""
+    min_distance = float('inf')  # Initialize the minimum distance with infinity
+    closest_points = None
+
+    # Compare every pair of points
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            dist = euclidean_distance(points[i], points[j])
+            if dist < min_distance:
+                min_distance = dist
+                closest_points = (points[i], points[j])
+
+    return closest_points, min_distance
+
+# Sample test for closest pair
+points = [(10, 0), (11, 5), (5, 3), (9, 3.5), (15, 3), (12.5, 7), (6, 6.5), (7.5, 4.5)]
+closest_points, min_distance = closest_pair(points)
+print("Closest Pair:", closest_points)
+print("Minimum Distance:", min_distance)
