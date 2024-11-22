@@ -1,0 +1,58 @@
+import itertools
+
+def generate_subset_sums(arr):
+    # Generate all possible subset sums for the array
+    subset_sums = []
+    for r in range(len(arr) + 1):
+        for subset in itertools.combinations(arr, r):
+            subset_sums.append(sum(subset))
+    return subset_sums
+
+def meet_in_the_middle(arr, target):
+    # Step 1: Divide the array into two halves
+    n = len(arr)
+    left_half = arr[:n//2]
+    right_half = arr[n//2:]
+    
+    # Step 2: Generate all possible subset sums for each half
+    left_sums = generate_subset_sums(left_half)
+    right_sums = generate_subset_sums(right_half)
+    
+    # Step 3: Sort right_sums for efficient searching
+    right_sums.sort()
+    
+    # Step 4: Find the closest subset sum to the target sum
+    closest_sum = None
+    min_diff = float('inf')
+    
+    # For each sum in left_sums, find the closest sum in right_sums
+    for left_sum in left_sums:
+        # Binary search for the closest sum in right_sums
+        low, high = 0, len(right_sums) - 1
+        while low <= high:
+            mid = (low + high) // 2
+            right_sum = right_sums[mid]
+            current_sum = left_sum + right_sum
+            diff = abs(current_sum - target)
+            
+            # Update closest sum if a better one is found
+            if diff < min_diff:
+                min_diff = diff
+                closest_sum = current_sum
+            
+            # Adjust the binary search range
+            if current_sum < target:
+                low = mid + 1
+            else:
+                high = mid - 1
+    
+    return closest_sum
+
+# Test cases
+set1 = [45, 34, 4, 12, 5, 2]
+target1 = 42
+set2 = [1, 3, 2, 7, 4, 6]
+target2 = 10
+
+print(f"Closest sum to target {target1} for set1: {meet_in_the_middle(set1, target1)}")
+print(f"Closest sum to target {target2} for set2: {meet_in_the_middle(set2, target2)}")
