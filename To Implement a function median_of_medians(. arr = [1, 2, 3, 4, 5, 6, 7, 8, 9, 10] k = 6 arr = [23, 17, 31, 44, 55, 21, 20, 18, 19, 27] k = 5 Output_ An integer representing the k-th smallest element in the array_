@@ -1,0 +1,41 @@
+def median_of_medians(arr, k):
+    # Helper function to find the median of a list
+    def median(lst):
+        lst.sort()
+        return lst[len(lst) // 2]
+
+    # Base case: if the array has 5 or fewer elements, just return the k-th smallest
+    if len(arr) <= 5:
+        arr.sort()
+        return arr[k]
+
+    # Step 1: Divide the array into groups of 5
+    groups = [arr[i:i+5] for i in range(0, len(arr), 5)]
+
+    # Step 2: Find the medians of the groups
+    medians = [median(group) for group in groups]
+
+    # Step 3: Find the median of the medians (recursively)
+    pivot = median_of_medians(medians, len(medians) // 2)
+
+    # Step 4: Partition the array around the pivot
+    left = [x for x in arr if x < pivot]
+    right = [x for x in arr if x > pivot]
+    pivot_count = arr.count(pivot)
+
+    # Step 5: Select the k-th smallest element based on the partition
+    if k < len(left):
+        return median_of_medians(left, k)
+    elif k < len(left) + pivot_count:
+        return pivot
+    else:
+        return median_of_medians(right, k - len(left) - pivot_count)
+
+# Test cases
+arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+k1 = 6
+print(f"Expected Output: 6, Found Output: {median_of_medians(arr1, k1)}")
+
+arr2 = [23, 17, 31, 44, 55, 21, 20, 18, 19, 27]
+k2 = 5
+print(f"Expected Output: 23, Found Output: {median_of_medians(arr2, k2)}")
