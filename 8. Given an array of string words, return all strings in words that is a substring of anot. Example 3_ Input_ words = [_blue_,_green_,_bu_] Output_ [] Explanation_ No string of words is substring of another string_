@@ -1,0 +1,15 @@
+def stringMatching(words):
+    result = []
+    # Iterate through each word in the list
+    for i in range(len(words)):
+        # Check if this word is a substring of any other word
+        for j in range(len(words)):
+            if i != j and words[i] in words[j]:
+                result.append(words[i])
+                break  # No need to check further if we already found a match
+    return result
+
+# Test cases
+print(stringMatching(["mass", "as", "hero", "superhero"]))  # Output: ["as", "hero"]
+print(stringMatching(["leetcode", "et", "code"]))  # Output: ["et", "code"]
+print(stringMatching(["blue", "green", "bu"]))  # Output: []
