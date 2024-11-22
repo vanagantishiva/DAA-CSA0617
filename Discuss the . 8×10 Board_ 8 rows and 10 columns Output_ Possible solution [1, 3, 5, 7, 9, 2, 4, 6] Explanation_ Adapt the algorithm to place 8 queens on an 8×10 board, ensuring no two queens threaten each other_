@@ -1,0 +1,60 @@
+def print_board(board):
+    """Helper function to print the board."""
+    for row in board:
+        print(" ".join(row))
+    print()
+
+def is_safe(board, row, col, N):
+    """Check if it's safe to place a queen at board[row][col]."""
+    # Check this column on all previous rows
+    for i in range(row):
+        if board[i][col] == 'Q':
+            return False
+    
+    # Check the upper left diagonal
+    for i, j in zip(range(row - 1, -1, -1), range(col - 1, -1, -1)):
+        if board[i][j] == 'Q':
+            return False
+
+    # Check the upper right diagonal
+    for i, j in zip(range(row - 1, -1, -1), range(col + 1, N)):
+        if board[i][j] == 'Q':
+            return False
+    
+    return True
+
+def solve_nqueens(board, row, N):
+    """Recursively solve the N-Queens problem."""
+    # Base case: If all queens are placed
+    if row == N:
+        print_board(board)
+        return True
+    
+    # Try placing the queen in each column of the current row
+    for col in range(N):
+        if is_safe(board, row, col, N):
+            # Place the queen
+            board[row][col] = 'Q'
+            # Recur to place the rest of the queens
+            if solve_nqueens(board, row + 1, N):
+                return True
+            # Backtrack if placing the queen in the current position doesn't lead to a solution
+            board[row][col] = '.'
+    
+    # If no position works, return False
+    return False
+
+def nqueens(N):
+    """Solve the N-Queens problem for a given N."""
+    # Initialize the board
+    board = [['.' for _ in range(N)] for _ in range(N)]
+    
+    # Start solving from the first row
+    if not solve_nqueens(board, 0, N):
+        print("No solution exists for N =", N)
+
+# Example for N = 4
+nqueens(4)
+
+# Example for N = 5
+#nqueens(5)
