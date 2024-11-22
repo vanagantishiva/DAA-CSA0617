@@ -1,0 +1,42 @@
+import numpy as np
+
+def strassen_matrix_multiplication(A, B):
+    # Base case for 2x2 matrices
+    if len(A) == 2 and len(A[0]) == 2:
+        a, b = A[0][0], A[0][1]
+        c, d = A[1][0], A[1][1]
+        e, f = B[0][0], B[0][1]
+        g, h = B[1][0], B[1][1]
+
+        # Calculate intermediate products
+        P1 = a * (f - h)
+        P2 = (a + b) * h
+        P3 = (c + d) * e
+        P4 = d * (g - e)
+        P5 = (a + d) * (e + h)
+        P6 = (b - d) * (g + h)
+        P7 = (a - c) * (e + f)
+
+        # Calculate final sub-matrices
+        C11 = P5 + P4 - P2 + P6
+        C12 = P1 + P2
+        C21 = P3 + P4
+        C22 = P1 + P5 - P3 - P7
+
+        # Combine the results into a single matrix
+        C = np.array([[C11, C12], [C21, C22]])
+        return C
+
+def main():
+    A = np.array([[1, 7], [3, 5]])
+    B = np.array([[6, 8], [4, 2]])
+
+    # Multiply matrices using Strassen's algorithm
+    C = strassen_matrix_multiplication(A, B)
+
+    print("Product Matrix C:")
+    print(C)
+
+# Execute the main function
+if __name__ == "__main__":
+    main()
