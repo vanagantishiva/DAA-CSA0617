@@ -1,0 +1,39 @@
+def is_hamiltonian_cycle(n, edges):
+    # Step 1: Build the adjacency matrix or adjacency list from the edge list
+    adj_list = {i: [] for i in range(n)}
+    for u, v in edges:
+        adj_list[u].append(v)
+        adj_list[v].append(u)
+    
+    # Step 2: Create a list to keep track of visited vertices
+    visited = [False] * n
+    
+    # Step 3: Function to check if there is a Hamiltonian cycle using backtracking
+    def backtrack(curr_vertex, count, start_vertex):
+        # If we've visited all vertices, check if we can return to the starting vertex
+        if count == n:
+            # If there is an edge back to the starting vertex, we have a cycle
+            if start_vertex in adj_list[curr_vertex]:
+                return True
+            return False
+        
+        # Try to visit every vertex from the current vertex
+        for next_vertex in adj_list[curr_vertex]:
+            if not visited[next_vertex]:
+                visited[next_vertex] = True
+                if backtrack(next_vertex, count + 1, start_vertex):
+                    return True
+                visited[next_vertex] = False
+        
+        return False
+    
+    # Step 4: Start the backtracking from vertex 0
+    visited[0] = True
+    return backtrack(0, 1, 0)
+
+# Example Input:
+edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2)]
+n = 4
+
+# Call the function and print the result
+print(is_hamiltonian_cycle(n, edges))  # Output: True or False
