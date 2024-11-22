@@ -1,0 +1,37 @@
+def is_safe(board, row, col, N, M):
+    """Check if it's safe to place a queen at board[row][col]"""
+    # Check the column for previous queens
+    for i in range(row):
+        if board[i] == col:
+            return False
+
+    # Check diagonals
+    for i in range(row):
+        if abs(board[i] - col) == row - i:
+            return False
+
+    return True
+
+def solve_nqueens(board, row, N, M):
+    """Recursively solve the generalized N-Queens problem"""
+    if row == N:
+        print("Possible solution:", board)
+        return True
+    
+    for col in range(M):
+        if is_safe(board, row, col, N, M):
+            board[row] = col
+            if solve_nqueens(board, row + 1, N, M):
+                return True
+            board[row] = -1  # Backtrack
+    
+    return False
+
+def nqueens(N, M):
+    """Solve the generalized N-Queens problem for a rectangular board"""
+    board = [-1] * N  # Initialize an empty board
+    if not solve_nqueens(board, 0, N, M):
+        print("No solution found")
+        
+# Example for 8x10 Board
+nqueens(8, 10)
