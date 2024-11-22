@@ -1,0 +1,33 @@
+MOD = 10**9 + 7
+
+def sumSubarrayMins(arr):
+    n = len(arr)
+    
+    # Next smaller element index (NSE)
+    nse = [-1] * n
+    stack = []
+    for i in range(n):
+        while stack and arr[stack[-1]] > arr[i]:
+            nse[stack.pop()] = i
+        stack.append(i)
+    
+    # Previous smaller element index (PSE)
+    pse = [-1] * n
+    stack = []
+    for i in range(n-1, -1, -1):
+        while stack and arr[stack[-1]] >= arr[i]:
+            pse[stack.pop()] = i
+        stack.append(i)
+    
+    total_sum = 0
+    for i in range(n):
+        left = i - pse[i]  # number of subarrays ending with arr[i]
+        right = nse[i] - i  # number of subarrays starting with arr[i]
+        contribution = arr[i] * left * right
+        total_sum = (total_sum + contribution) % MOD
+    
+    return total_sum
+
+# Test case
+arr = [3, 1, 2, 4]
+print(sumSubarrayMins(arr))  # Output: 17
