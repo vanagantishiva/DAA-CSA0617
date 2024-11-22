@@ -1,0 +1,48 @@
+# Merge function modified to count comparisons
+def merge(arr1, arr2):
+    result = []
+    i = j = 0
+    comparisons = 0  # Variable to count the comparisons made during merge
+    while i < len(arr1) and j < len(arr2):
+        comparisons += 1
+        if arr1[i] < arr2[j]:
+            result.append(arr1[i])
+            i += 1
+        else:
+            result.append(arr2[j])
+            j += 1
+    # Append remaining elements
+    result.extend(arr1[i:])
+    result.extend(arr2[j:])
+    
+    return result, comparisons
+
+# Merge Sort function modified to count total comparisons
+def merge_sort(arr):
+    total_comparisons = 0
+    # Base case: If the array has 1 or fewer elements, it's already sorted
+    if len(arr) <= 1:
+        return arr, total_comparisons
+    
+    # Divide the array into two halves
+    mid = len(arr) // 2
+    left_half, left_comparisons = merge_sort(arr[:mid])
+    right_half, right_comparisons = merge_sort(arr[mid:])
+    
+    # Merge the sorted halves and count comparisons during the merge step
+    sorted_arr, merge_comparisons = merge(left_half, right_half)
+    
+    total_comparisons = left_comparisons + right_comparisons + merge_comparisons
+    return sorted_arr, total_comparisons
+
+# Test Case 1
+arr1 = [12, 4, 78, 23, 45, 67, 89, 1]
+sorted_arr1, comparisons1 = merge_sort(arr1)
+print("Test Case 1 - Sorted Array:", sorted_arr1)
+print("Comparisons Made:", comparisons1)
+
+# Test Case 2
+arr2 = [38, 27, 43, 3, 9, 82, 10]
+sorted_arr2, comparisons2 = merge_sort(arr2)
+print("Test Case 2 - Sorted Array:", sorted_arr2)
+print("Comparisons Made:", comparisons2)
