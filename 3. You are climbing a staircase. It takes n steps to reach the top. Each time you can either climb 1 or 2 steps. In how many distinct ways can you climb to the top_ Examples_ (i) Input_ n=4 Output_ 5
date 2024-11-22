@@ -1,0 +1,22 @@
+def climbStairs(n):
+    # Base cases
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 1
+    
+    # Variables to store the previous two values
+    prev1 = 1  # Ways to reach step 0
+    prev2 = 1  # Ways to reach step 1
+    
+    # Loop to calculate the number of ways for each step from 2 to n
+    for i in range(2, n + 1):
+        current = prev1 + prev2  # Ways to reach step i
+        prev1 = prev2  # Update prev1 to be the previous prev2
+        prev2 = current  # Update prev2 to be the current value
+    
+    # The number of ways to reach the nth step
+    return prev2
+
+# Test Case
+print(climbStairs(4))  # Output: 5
