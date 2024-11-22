@@ -1,0 +1,33 @@
+
+def min_containers_required(weights, max_capacity):
+    # Sort the weights in descending order to prioritize larger items first
+    weights.sort(reverse=True)
+    
+    container_count = 0  # This will store the number of containers used
+    current_capacity = 0  # This keeps track of the current container's used capacity
+    
+    # Iterate over the sorted list of weights
+    for weight in weights:
+        if current_capacity + weight <= max_capacity:
+            current_capacity += weight  # Add the item to the current container
+        else:
+            # Start a new container for this item
+            container_count += 1
+            current_capacity = weight  # The item occupies the new container
+    
+    # If there is any item in the last container, count it
+    if current_capacity > 0:
+        container_count += 1
+    
+    return container_count
+
+# Test Case 1
+n = 7
+weights = [5, 10, 15, 20, 25, 30, 35]
+max_capacity = 50
+
+# Run the function
+result = min_containers_required(weights, max_capacity)
+
+# Output the result
+print(result)
